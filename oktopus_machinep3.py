@@ -365,19 +365,19 @@ class microeditor:
 		def new_microcommand(self):
 				command = 0
 				try:
-					 next_addr = int(self.next_address.get())
-					 curr_addr = int(self.current_address.get())
-					 command = command + pow(2, 27) * next_addr + pow(2, 26) * self.jmpc.get() + pow(2, 25) * self.jamn.get() + pow(2, 24) * self.jamz.get() + pow(2, 22) * self.shift.get() \
-														 + pow(2, 20) * self.function.get() + pow(2, 19) * self.ena.get() + pow(2, 18) * self.enb.get() + pow(2, 17) * self.inva.get() + pow(2, 16) * self.inc.get() \
-														 + pow(2, 15) * self.C_H.get() + pow(2, 14) * self.C_OPC.get() + pow(2, 13) * self.C_TOS.get() + pow(2, 12) * self.C_CPP.get() + pow(2, 11) * self.C_LV.get() \
-														 + pow(2, 10) * self.C_SP.get() + pow(2, 9) * self.C_PC.get() + pow(2, 8) * self.C_MDR.get() + pow(
-																 2, 7) * self.C_MAR.get() + pow(2, 5) * self.read_write.get() + pow(2, 4) * self.fetch.get() + self.BBus.get()
-					 print(bin(command)[2:len(bin(command))].rjust(36, "0"))
-					 print(str(self.jamn.get()))
-					 # insert the created microcommand into the microcommandmemory
-					 self.micromem.insert(curr_addr, command, self.color.get())
-					 self.current_address.set(str(curr_addr+1))
-					 self.next_address.set(str(next_addr+1))
+					next_addr = int(self.next_address.get())
+					curr_addr = int(self.current_address.get())
+					command = command + pow(2, 27) * next_addr + pow(2, 26) * self.jmpc.get() + pow(2, 25) * self.jamn.get() + pow(2, 24) * self.jamz.get() + pow(2, 22) * self.shift.get() \
+														+ pow(2, 20) * self.function.get() + pow(2, 19) * self.ena.get() + pow(2, 18) * self.enb.get() + pow(2, 17) * self.inva.get() + pow(2, 16) * self.inc.get() \
+														+ pow(2, 15) * self.C_H.get() + pow(2, 14) * self.C_OPC.get() + pow(2, 13) * self.C_TOS.get() + pow(2, 12) * self.C_CPP.get() + pow(2, 11) * self.C_LV.get() \
+														+ pow(2, 10) * self.C_SP.get() + pow(2, 9) * self.C_PC.get() + pow(2, 8) * self.C_MDR.get() + pow(
+																2, 7) * self.C_MAR.get() + pow(2, 5) * self.read_write.get() + pow(2, 4) * self.fetch.get() + self.BBus.get()
+					print(bin(command)[2:len(bin(command))].rjust(36, "0"))
+					print(str(self.jamn.get()))
+					# insert the created microcommand into the microcommandmemory
+					self.micromem.insert(curr_addr, command, self.color.get())
+					self.current_address.set(str(curr_addr+1))
+					self.next_address.set(str(next_addr+1))
 				except:
 						raise ()
 						print("No Address ist given!")
