@@ -42,7 +42,7 @@ class mainstorage:
         v2 = value>>8 & 255
         v3 = value>>16 & 255
         v4 = value>>24
-        
+        # draw to console
         if addr >= self.__size:
             if self.console != None:
                 a = addr - self.__size
@@ -71,8 +71,26 @@ class mainstorage:
         print("save " + str(value) + " on " + str(addr))
 
     def save_byte(self,addr,value):
-        self.__mainstorage[addr]['val'] = int(value,16)
-        self.__fr.itemconfig(self.__mainstorage[addr]['text'],text=  str(value))
+       if addr >= self.__size:
+            if self.console != None:
+                a = addr - self.__size
+                pos = int(a/8)
+                line = a % 8
+                if line > 3:
+                    td = 1
+                    line = line - 4
+                else:
+                    td = 0
+                    
+                y = pos % 30
+                x = round(pos/30)
+                print("pos: " + str(pos) + " x: " + str(x) + " y: " + str(y) + " "  + str(value) )
+                self.console.draw_line(x,y,td,line,value)
+            print("bad address")
+       else:
+           self.__mainstorage[addr]['val'] = int(value,16)
+           self.__fr.itemconfig(self.__mainstorage[addr]['text'],text=  str(value))
+           
     def read_word(self,addr):
         if addr >= self.__size:
             print("bad address")
@@ -844,7 +862,20 @@ class screen:
                     self.canvas.itemconfig(i,outline="black")
                 value = int(value/2)
                 bit = bit + 1
-                
+
+    def draw_line(self,x,y,td,line,data):
+        print("len data: " + str(data) + " x: " + str(x) + " y: " + str(y) )
+        min = td * 4
+        if len(data) > 3:       
+            for i in self.characters[x][y][(min*8)+line:(min+1+line)*8]:
+                if value % 2 == 1:
+                    print("weiss")
+                    self.canvas.itemconfig(i,outline="lightgreen")
+                else:
+                    self.canvas.itemconfig(i,outline="black")
+                value = int(value/2)
+            
+            
         
         #self.canvas.create_rectangle(590,390,600,400,fill="red")         
     def key_pressed(self,event):
