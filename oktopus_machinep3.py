@@ -28,15 +28,7 @@ class mainstorage:
 
     def start_console(self):
         self.console = screen(self)
-        #self.console.draw(0,0,[0,24,36,36,126,66,66,66])
-        #self.save_word(1026,(66<<16)+(66<<8)+126)
-        self.save_word(4096,(126<<24)+(8<<16)+(8<<8)+8)
-        self.save_word(4104,(8<<24)+(8<<16)+(8<<8))
-        self.save_word(4112,(112<<24)+(72<<16)+(72<<8)+112)
-        self.save_word(4120,(64<<24)+(64<<16)+(64<<8))
-        #self.save_word(1027,(66<<24)+(66<<16)+(66<<8)+0)
-        #self.console.draw(1,0,[0,66,66,126,66,66,66,0])
-
+            
     def save_word(self,addr,value):
         v1 = value & 255
         v2 = value>>8 & 255
@@ -53,7 +45,7 @@ class mainstorage:
                     td = 0
                 pos = int(pos/2)
                 y = pos % 30
-                x = round(pos/30)
+                x = int(pos/30)
                 print("pos: " + str(pos) + " x: " + str(x) + " y: " + str(y) + " "  + str(value) + " " + str(v1) + " " + str(v2) + " " + str(v3) + " " + str(v4))
                 self.console.draw(x,y,td,[v4,v3,v2,v1])
             print("bad address")
@@ -83,13 +75,13 @@ class mainstorage:
                     td = 0
                     
                 y = pos % 30
-                x = round(pos/30)
-                print("pos: " + str(pos) + " x: " + str(x) + " y: " + str(y) + " "  + str(value) )
+                x = int(pos/30)
+                print("address: " + str(addr) + " a: " + str(a) + " pos: " + str(pos) + " x: " + str(x) + " y: " + str(y) + " "  + str(value) )
                 self.console.draw_line(x,y,td,line,value)
             print("bad address")
        else:
-           self.__mainstorage[addr]['val'] = int(value,16)
-           self.__fr.itemconfig(self.__mainstorage[addr]['text'],text=  str(value))
+           self.__mainstorage[addr]['val'] = value
+           self.__fr.itemconfig(self.__mainstorage[addr]['text'],text=  hex(value)[0:4])
            
     def read_word(self,addr):
         if addr >= self.__size:
@@ -507,7 +499,7 @@ class om:
         for l in code:
             v = l.rstrip('\n').lstrip(' ').rstrip(' ').split(":")
             if v[1] != '' and v[1] != " ":
-                self.mainstorage.save_byte(int(v[0]),v[1])
+                self.mainstorage.save_byte(int(v[0]),int(v[1],16))
                 
 
         print("speicheradresse 5: " + str(self.mainstorage.read_byte(3)))
@@ -850,7 +842,8 @@ class screen:
   
         min = td * 4
         if len(data) > 3:
-            print("len self char: " + str(len(self.characters[x][y])))
+            print("len x: " + str(len(self.characters)) + " len y: " + str(len(self.characters[17])))
+            #print("len self char: " + str(len(self.characters[x][y])))
             for i in self.characters[x][y][min*8:(min+4)*8]:
                 if bit % 8 == 0:
                     value = data[pointer]
@@ -863,17 +856,17 @@ class screen:
                 value = int(value/2)
                 bit = bit + 1
 
-    def draw_line(self,x,y,td,line,data):
-        print("len data: " + str(data) + " x: " + str(x) + " y: " + str(y) )
+    def draw_line(self,x,y,td,line,value):
+        print("len data: " + str(value) + " x: " + str(x) + " y: " + str(y) )
         min = td * 4
-        if len(data) > 3:       
-            for i in self.characters[x][y][(min*8)+line:(min+1+line)*8]:
-                if value % 2 == 1:
-                    print("weiss")
-                    self.canvas.itemconfig(i,outline="lightgreen")
-                else:
-                    self.canvas.itemconfig(i,outline="black")
-                value = int(value/2)
+        print("x: " + str(x) + " y: " + str(y))    
+        for i in self.characters[x][y][(min*8)+line:(min+1+line)*8]:
+            if value % 2 == 1:
+                print("weiss")
+                self.canvas.itemconfig(i,outline="lightgreen")
+            else:
+                self.canvas.itemconfig(i,outline="black")
+            value = int(value/2)
             
             
         
