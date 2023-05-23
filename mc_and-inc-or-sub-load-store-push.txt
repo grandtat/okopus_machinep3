@@ -1,0 +1,50 @@
+and1 MAR = SP = SP – 1; rd
+and2 H = TOS
+and3 MDR = TOS = MDR AND H; wr; goto Main1
+
+increment1 MAR = SP
+increment2 MDR = TOS = TOS + 1; rd; goto Main 
+
+or1 MAR = SP = SP – 1; rd
+or2 H = TOS 
+or3 MDR = TOS = MDR OR H; wr; goto Main1
+
+sub1 MAR = SP = SP – 1; rd
+sub2 H = TOS
+sub3 MDR = TOS = MDR – H; wr; goto Main1
+
+
+------------------------------------------------
+load1 H = LV
+load2 MAR = MBRU + H; rd 
+load3 MAR = SP = SP + 1 
+load4 PC = PC + 1; fetch; wr
+load5 TOS = MDR; goto Main1
+
+store1 H = LV 
+store2 MAR = MBRU + H 
+store3 MDR = TOS; wr 
+store4 SP = MAR = SP – 1; rd 
+store5 PC = PC + 1; fetch 
+store6 TOS = MDR; goto Main1
+------------------------------------------------
+
+
+
+push1 SP = MAR = SP + 1 
+push2 PC = PC + 1; fetch 
+push3 MDR = TOS = MBR; wr; goto Main1
+
+
+
+
+
+
+___________________________________________________
+
+increment1 H = LV 
+increment2 MAR = MBRU + H; rd 
+increment3 PC = PC + 1; fetch
+increment4 H = MDR 
+increment5 PC = PC + 1; fetch
+increment6 MDR = MBR + H; wr; goto Main1
