@@ -28,7 +28,16 @@ class mainstorage:
 
     def start_console(self):
         self.console = screen(self)
-            
+ #       for i in range(0,30):
+ #           self.save_word(4096+(i*8), 255<<8)
+  #          self.save_word(4097+(19*240)+(i*8), 255<<16)            
+ #       #Rand links und rechts
+ #       for i in range(0, 20):
+ #           self.save_word(4096+(i*240), (64<<24) + (64<<16) + (64<<8) + 64)
+ #           self.save_word(4097+(i*240), (64<<24) + (64<<16) + (64<<8) + 64)
+ #           self.save_word(4328+(i*240), (2<<24) + (2<<16) + (2<<8) + 2)
+ #           self.save_word(4329+(i*240), (2<<24) + (2<<16) + (2<<8) + 2)
+ 
     def save_word(self,addr,value):
         v1 = value & 255
         v2 = value>>8 & 255
@@ -39,11 +48,11 @@ class mainstorage:
             if self.console != None:
                 a = addr - self.__size
                 pos = int(a/8)
-                if pos % 2:
+                if a % 2:
                     td = 1
                 else:
                     td = 0
-                pos = int(pos/2)
+            
                 y = pos % 30
                 x = int(pos/30)
                 print("pos: " + str(pos) + " x: " + str(x) + " y: " + str(y) + " "  + str(value) + " " + str(v1) + " " + str(v2) + " " + str(v3) + " " + str(v4))
@@ -68,16 +77,11 @@ class mainstorage:
                 a = addr - self.__size
                 pos = int(a/8)
                 line = a % 8
-                if line > 3:
-                    td = 1
-                    line = line - 4
-                else:
-                    td = 0
-                    
+                   
                 y = pos % 30
                 x = int(pos/30)
                 print("address: " + str(addr) + " a: " + str(a) + " pos: " + str(pos) + " x: " + str(x) + " y: " + str(y) + " "  + str(value) )
-                self.console.draw_line(x,y,td,line,value)
+                self.console.draw_line(x,y,line,value)
             print("bad address")
        else:
            self.__mainstorage[addr]['val'] = value
@@ -856,11 +860,11 @@ class screen:
                 value = int(value/2)
                 bit = bit + 1
 
-    def draw_line(self,x,y,td,line,value):
+    def draw_line(self,x,y,line,value):
         print("len data: " + str(value) + " x: " + str(x) + " y: " + str(y) )
-        min = td * 4
+        
         print("x: " + str(x) + " y: " + str(y))    
-        for i in self.characters[x][y][(min*8)+line:(min+1+line)*8]:
+        for i in self.characters[x][y][line*8:line*8+8]:
             if value % 2 == 1:
                 print("weiss")
                 self.canvas.itemconfig(i,outline="lightgreen")
